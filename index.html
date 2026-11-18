@@ -2,10 +2,14 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#060818">
+<meta name="apple-mobile-web-app-title" content="Physik-Quiz">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="icon" type="image/png" sizes="48x48" href="data:image/png;base64,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">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <title>Physik-Quiz von Adrian, Quirin und Kilian</title>
 <style>
   :root {
@@ -141,6 +145,7 @@
   }
   #adminPass:focus { outline: 3px solid var(--brass); outline-offset: 2px; }
   #adminErr { color: var(--wrong); min-height: 1.35em; }
+  #setTitle { touch-action: none; -webkit-touch-callout: none; }
   #sensRange { display: block; width: 100%; height: 44px; margin: 0; accent-color: var(--brass); touch-action: none; cursor: pointer; }
   .range-ends { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
   #hud, #hud * { touch-action: none; }
@@ -1131,7 +1136,7 @@ addEventListener("pointerup", e => {
 });
 addEventListener("pointercancel", e => fingers.delete(e.pointerId));
 document.addEventListener("touchstart", e => {
-  if (G.phase === "run" && !e.target.closest("#pauseBtn")) e.preventDefault();
+  if (G.phase === "run" && !zoomed() && !e.target.closest("#pauseBtn")) e.preventDefault();
 }, { passive: false });
 addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -1149,12 +1154,37 @@ addEventListener("keydown", e => {
   }
 });
 document.addEventListener("visibilitychange", () => { if (document.hidden) pause(); });
-document.addEventListener("gesturestart", e => e.preventDefault());
-cv.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
+/* Zoomen verhindern. Ist die Seite schon vergrößert, bleibt Herauszoomen erlaubt. */
+const zoomed = () => !!window.visualViewport && visualViewport.scale > 1.01;
+const noZoom = e => { if (!zoomed()) e.preventDefault(); };
+["gesturestart", "gesturechange", "gestureend"].forEach(t => document.addEventListener(t, noZoom, { passive: false }));
+let lastTouchEnd = -1000;
+document.addEventListener("touchstart", e => {
+  if (zoomed()) return;
+  if (e.touches.length > 1 || e.target.closest("#setTitle")) e.preventDefault();
+}, { passive: false });
+document.addEventListener("touchend", e => {
+  const now = e.timeStamp, quick = now - lastTouchEnd < 380;
+  lastTouchEnd = now;
+  if (!quick || zoomed() || e.target.closest("input")) return;
+  e.preventDefault(); // schnelles Doppeltippen zoomt sonst
+  const b = e.target.closest("button");
+  if (b && !b.disabled) b.click();
+}, { passive: false });
+function resetZoom() {
+  const m = document.querySelector('meta[name="viewport"]'), v = m.content;
+  m.content = v + ", minimum-scale=1"; setTimeout(() => { m.content = v; }, 60);
+}
+addEventListener("orientationchange", resetZoom);
+addEventListener("pageshow", resetZoom);
+cv.addEventListener("touchstart", e => { if (!zoomed()) e.preventDefault(); }, { passive: false });
 cv.addEventListener("contextmenu", e => e.preventDefault());
 addEventListener("touchend", initAudio, { passive: true });
 addEventListener("click", initAudio);
-document.addEventListener("touchmove", e => { if (!e.target.closest(".overlay")) e.preventDefault(); }, { passive: false });
+document.addEventListener("touchmove", e => {
+  if (zoomed()) return;
+  if (e.touches.length > 1 || !e.target.closest(".overlay")) e.preventDefault();
+}, { passive: false });
 
 /* ---------- Verirrter Astronaut im Menü ---------- */
 const stray = { on: false, x: 0, y: 0, vx: 0, vy: 0, rot: 0, vr: 0, wait: 7, caught: 0, sparks: [] };
