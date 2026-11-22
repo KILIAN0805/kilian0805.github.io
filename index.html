@@ -320,57 +320,38 @@
 "use strict";
 /* ==========================================================================
    FRAGEN – hier könnt ihr alles anpassen.
-   q = Frage, a = Antworten (die ERSTE ist immer die richtige, die Reihenfolge
-   im Spiel wird gemischt), why = Erklärung nach einem Fehler.
-   Antworten kurz halten, sie müssen auf die Türen passen.
+   q = Frage, a = Antworten: die ERSTE ist die richtige, danach die falschen.
+   Bei mehr als zwei falschen nimmt das Spiel jedes Mal zwei zufällig.
+   why = Erklärung nach einem Fehler. Antworten kurz halten (Türen!).
    ========================================================================== */
 const QUESTIONS = [
-  // Weltbilder
-  { q: "Was steht im geozentrischen Weltbild im Mittelpunkt?", a: ["Die Erde", "Die Sonne", "Der Mond"], why: "Geo heißt Erde: Sonne, Mond und Planeten kreisen in diesem Modell um die Erde." },
-  { q: "Wer fasste das geozentrische Weltbild im Almagest zusammen?", a: ["Ptolemäus", "Kopernikus", "Galilei"], why: "Claudius Ptolemäus schrieb den Almagest im 2. Jahrhundert n. Chr." },
-  { q: "Womit erklärte Ptolemäus die Schleifenbahnen der Planeten?", a: ["Epizykel", "Ellipsen", "Gravitation"], why: "Planeten laufen bei ihm auf kleinen Kreisen, deren Mittelpunkt auf einem großen Kreis wandert." },
-  { q: "Wer schlug schon in der Antike die Sonne als Zentrum vor?", a: ["Aristarch von Samos", "Aristoteles", "Ptolemäus"], why: "Aristarch vertrat das im 3. Jahrhundert v. Chr., setzte sich damit aber nicht durch." },
-  { q: "Wann erschien das Hauptwerk von Kopernikus?", a: ["1543", "1492", "1687"], why: "De revolutionibus orbium coelestium erschien 1543, in seinem Todesjahr." },
-  { q: "Was entdeckte Galilei 1610 mit dem Fernrohr am Jupiter?", a: ["Vier Monde", "Zwei Ringe", "Polkappen"], why: "Die Monde zeigten: Nicht alles am Himmel kreist um die Erde." },
-  { q: "Welche Beobachtung Galileis passte geometrisch nicht zu Ptolemäus?", a: ["Alle Venusphasen", "Mondkrater", "Sonnenflecken"], why: "Eine fast volle Venus ist nur möglich, wenn sie um die Sonne läuft." },
-  { q: "Die Sonne kreist bei Tycho Brahe um die Erde. Und die übrigen Planeten?", a: ["Um die Sonne", "Um die Erde", "Um den Mond"], why: "Sein Modell ist ein Kompromiss aus geozentrischem und heliozentrischem Weltbild." },
-  { q: "Welche Form haben Planetenbahnen nach Keplers 1. Gesetz?", a: ["Ellipsen", "Kreise", "Spiralen"], why: "Die Sonne steht dabei in einem der beiden Brennpunkte." },
-  { q: "Wann ist ein Planet nach Keplers 2. Gesetz am schnellsten?", a: ["In Sonnennähe", "In Sonnenferne", "Immer gleich"], why: "Der Fahrstrahl überstreicht in gleichen Zeiten gleiche Flächen." },
-  { q: "Was ist nach Keplers 3. Gesetz für alle Planeten der Sonne gleich?", a: ["T² / a³", "T / a", "T · a"], why: "Das Quadrat der Umlaufzeit geteilt durch die dritte Potenz der großen Halbachse ist konstant." },
-  { q: "Der Abstand zweier Massen verdoppelt sich. Wie groß ist die Gravitationskraft dann?", a: ["Ein Viertel", "Die Hälfte", "Das Doppelte"], why: "Nach Newton gilt F ~ 1/r², also ein Viertel bei doppeltem Abstand." },
-
-  // Struktur des Universums
-  { q: "Welche dieser Strukturen ist die größte?", a: ["Superhaufen", "Galaxienhaufen", "Lokale Gruppe"], why: "Galaxien bilden Gruppen und Haufen, diese wiederum Superhaufen." },
-  { q: "Zu welcher Galaxienansammlung gehört die Milchstraße direkt?", a: ["Lokale Gruppe", "Coma-Haufen", "Fornax-Haufen"], why: "Zur Lokalen Gruppe gehören auch Andromeda und die Dreiecksgalaxie." },
-  { q: "Welcher Galaxientyp ist die Milchstraße?", a: ["Balkenspirale", "Elliptische Galaxie", "Irreguläre Galaxie"], why: "Sie hat Spiralarme und einen balkenförmigen Zentralbereich." },
-  { q: "Wie groß ist der Durchmesser der Milchstraßenscheibe ungefähr?", a: ["100.000 Lichtjahre", "1.000 Lichtjahre", "10 Mio. Lichtjahre"], why: "Die Sternenscheibe misst rund 100.000 Lichtjahre." },
-  { q: "Wie weit ist die Sonne vom Zentrum der Milchstraße entfernt?", a: ["Rund 26.000 Lj", "Rund 260 Lj", "Rund 2,6 Mio. Lj"], why: "Wir liegen in der Scheibe, ziemlich weit außerhalb des Zentrums." },
-  { q: "Wie weit ist die Andromedagalaxie von uns entfernt?", a: ["2,5 Mio. Lichtjahre", "25.000 Lichtjahre", "2,5 Mrd. Lichtjahre"], why: "Ihr Licht, das wir heute sehen, ist rund 2,5 Millionen Jahre alt." },
-  { q: "In welchem Superhaufen liegt die Milchstraße nach der Einteilung von 2014?", a: ["Laniakea", "Shapley", "Perseus-Fische"], why: "Laniakea ist hawaiianisch und bedeutet ungefähr unermesslicher Himmel." },
-  { q: "Wie sind Galaxien auf den größten Skalen angeordnet?", a: ["Als kosmisches Netz", "Als festes Gitter", "Als eine Kugel"], why: "Filamente und Wände aus Galaxien umschließen riesige Leerräume." },
-  { q: "Was ist ein Void?", a: ["Ein galaxienarmer Raum", "Ein Schwarzes Loch", "Ein Sternhaufen"], why: "Voids sind gewaltige Regionen mit sehr wenigen Galaxien." },
-  { q: "Was gibt ein Lichtjahr an?", a: ["Eine Strecke", "Eine Zeitspanne", "Eine Helligkeit"], why: "Es ist die Strecke, die Licht in einem Jahr zurücklegt: rund 9,46 Billionen km." },
-  { q: "Wie lange braucht Sonnenlicht ungefähr bis zur Erde?", a: ["8 Minuten", "8 Sekunden", "8 Stunden"], why: "Bei 150 Mio. km Abstand sind es etwa 8 Minuten und 20 Sekunden." },
-  { q: "Welcher Stern ist der Sonne am nächsten?", a: ["Proxima Centauri", "Sirius", "Polarstern"], why: "Proxima Centauri ist rund 4,2 Lichtjahre entfernt." },
-
-  // Kosmologisches Prinzip
-  { q: "Wie ist das Universum laut kosmologischem Prinzip im Großen?", a: ["Homogen und isotrop", "Endlich und starr", "Rotierend und leer"], why: "Auf großen Skalen hat es überall und in jeder Richtung die gleichen Eigenschaften." },
-  { q: "Was bedeutet homogen?", a: ["An jedem Ort gleich", "In jeder Richtung gleich", "Zu jeder Zeit gleich"], why: "Kein Ort ist im Großen gegenüber einem anderen ausgezeichnet." },
-  { q: "Was bedeutet isotrop?", a: ["In jeder Richtung gleich", "An jedem Ort gleich", "Zu jeder Zeit gleich"], why: "Egal wohin man schaut, im Großen sieht das Universum gleich aus." },
-  { q: "Ab welcher Größenordnung gilt das kosmologische Prinzip ungefähr?", a: ["Mehrere 100 Mio. Lj", "Einige Lichtjahre", "Einige 1.000 Lj"], why: "Darunter dominieren Strukturen wie Galaxien, Haufen und Voids." },
-  { q: "Welche Messung stützt die Isotropie besonders stark?", a: ["Hintergrundstrahlung", "Sonnenwind", "Polarlichter"], why: "Sie kommt aus allen Richtungen fast gleich, die Schwankungen sind winzig." },
-  { q: "Welche Temperatur hat die kosmische Hintergrundstrahlung?", a: ["Etwa 2,7 K", "Etwa 27 K", "Etwa 273 K"], why: "Sie entspricht einem Schwarzkörper von rund 2,7 Kelvin." },
-  { q: "Was sagt das kopernikanische Prinzip?", a: ["Unser Ort ist normal", "Die Erde ist zentral", "Die Sonne ist einmalig"], why: "Wir nehmen keine besondere Position im Universum ein." },
-  { q: "Welches Modell nahm an, dass das Universum auch zeitlich immer gleich aussieht?", a: ["Steady-State-Modell", "Urknallmodell", "Tychos Modell"], why: "Das ist das perfekte kosmologische Prinzip, u. a. bei Hoyle, Bondi und Gold." },
-
-  // Expansion
-  { q: "Was bewies Edwin Hubble in den 1920ern mit Cepheiden?", a: ["Andromeda ist eine Galaxie", "Die Sonne ist das Zentrum", "Die Milchstraße ist alles"], why: "Der Andromedanebel liegt weit außerhalb der Milchstraße und ist eine eigene Galaxie." },
-  { q: "Wie lautet das Hubble-Lemaître-Gesetz?", a: ["v = H₀ · d", "v = H₀ / d", "v = H₀ + d"], why: "Je weiter eine Galaxie entfernt ist, desto schneller entfernt sie sich." },
-  { q: "Was zeigt die Rotverschiebung ferner Galaxien?", a: ["Das All expandiert", "Das All schrumpft", "Galaxien kühlen ab"], why: "Der Raum dehnt sich aus und streckt dabei die Wellenlänge des Lichts." },
-  { q: "Wie alt ist das Universum nach heutigen Messungen?", a: ["13,8 Mrd. Jahre", "4,6 Mrd. Jahre", "138 Mrd. Jahre"], why: "4,6 Milliarden Jahre ist ungefähr das Alter des Sonnensystems." },
-  { q: "Welchen Anteil am Energiegehalt des Alls hat normale Materie?", a: ["Etwa 5 %", "Etwa 27 %", "Etwa 68 %"], why: "27 % sind Dunkle Materie, 68 % Dunkle Energie." },
-  { q: "Fast alle Galaxien entfernen sich von uns. Sind wir also das Zentrum?", a: ["Nein, das gilt überall", "Ja, genau deshalb", "Ja, aber nur knapp"], why: "Bei gleichmäßiger Expansion sieht man das von jeder Galaxie aus." },
-  { q: "Warum ist der Nachthimmel dunkel (Olbers-Paradoxon)?", a: ["Das All hat ein Alter", "Staub schluckt alles", "Es gibt zu wenig Sterne"], why: "Licht sehr ferner Sterne hatte noch nicht genug Zeit, uns zu erreichen." }
+  { q: "Was ist die kleinste dieser Strukturen?", a: ["Sonnensystem", "Lokale Gruppe", "Virgo-Superhaufen", "Galaxis"], why: "Das Sonnensystem liegt in der Galaxis, diese in der Lokalen Gruppe und die im Virgo-Superhaufen." },
+  { q: "Was bedeutet „Galaxis“?", a: ["Nur unsere Milchstraße", "Jede beliebige Galaxie", "Ein Galaxienhaufen", "Ein Superhaufen"], why: "Mit Galaxis ist nur unsere eigene Galaxie gemeint, die Milchstraße." },
+  { q: "Zu welcher Gruppe gehört die Milchstraße?", a: ["Lokale Gruppe", "Virgo-Gruppe", "Andromeda-Gruppe", "Zentrale Gruppe"], why: "Die Milchstraße gehört zur Lokalen Gruppe." },
+  { q: "Welche Nachbargalaxie gehört ebenfalls zur Lokalen Gruppe?", a: ["Andromedagalaxie", "Virgo-Galaxie", "Sonnengalaxie", "Olbers-Galaxie"], why: "Andromeda ist die größte Galaxie der Lokalen Gruppe." },
+  { q: "Welche Reihenfolge stimmt, von klein nach groß?", a: ["Sonnensystem → Galaxis → Lokale Gruppe → Virgo", "Galaxis → Sonnensystem → Lokale Gruppe → Virgo", "Sonnensystem → Lokale Gruppe → Galaxis → Virgo", "Lokale Gruppe → Sonnensystem → Galaxis → Virgo"], why: "Sonnensystem, dann Galaxis, dann Lokale Gruppe, dann Virgo-Superhaufen." },
+  { q: "Wie weit entfernte Objekte kann man heute beobachten?", a: ["Über 13 Mrd. Lichtjahre", "Über 13 Mio. Lichtjahre", "Über 1,3 Mrd. Lichtjahre", "Über 130 Mrd. Lichtjahre"], why: "Die fernsten beobachteten Objekte liegen über 13 Milliarden Lichtjahre entfernt." },
+  { q: "Warum ist ein Blick in die Ferne auch ein Blick in die Vergangenheit?", a: ["Das Licht war lange unterwegs", "Teleskope speichern alte Bilder", "Ferne Sterne sind erloschen", "Dort läuft die Zeit langsamer"], why: "Wir sehen ferne Objekte so, wie sie waren, als ihr Licht losgeschickt wurde." },
+  { q: "Wie viel Prozent des Universums sind normale Materie?", a: ["ca. 5 %", "ca. 68 %", "ca. 27 %", "ca. 50 %"], why: "Nur rund 5 % sind normale Materie, 27 % Dunkle Materie, 68 % Dunkle Energie." },
+  { q: "Wie groß ist der Anteil der Dunklen Materie?", a: ["ca. 27 %", "ca. 5 %", "ca. 68 %", "ca. 95 %"], why: "Dunkle Materie macht rund 27 % aus." },
+  { q: "Was macht mit ca. 68 % den größten Anteil aus?", a: ["Dunkle Energie", "Dunkle Materie", "Sterne und Planeten", "Gas und Staub"], why: "Die Dunkle Energie ist mit rund 68 % der größte Anteil." },
+  { q: "Woran merkt man Dunkle Materie?", a: ["An ihrer Gravitation", "Sie leuchtet im Infrarot", "Sie verdunkelt Sterne", "An ihrer Farbe im Teleskop"], why: "Sie ist unsichtbar, ihre Schwerkraft wirkt aber z. B. auf die Bewegung von Sternen in Galaxien." },
+  { q: "Was bewirkt die Dunkle Energie?", a: ["Sie treibt die Expansion an", "Sie hält Galaxien zusammen", "Sie lässt Sterne leuchten", "Sie bremst die Ausdehnung"], why: "Die Dunkle Energie sorgt dafür, dass sich das Universum immer schneller ausdehnt." },
+  { q: "Was zeigt der Vergleich „Wind im Baum“?", a: ["Man sieht nur die Wirkung", "Dunkle Materie weht wie Wind", "Es gibt sie nur auf der Erde", "Bäume enthalten Dunkle Materie"], why: "Wind sieht man nicht, nur wie sich die Blätter bewegen. Genauso ist es bei Dunkler Materie." },
+  { q: "Was sind „WIMPs“?", a: ["Mögliche Teilchen Dunkler Materie", "Ein Teleskop der ESA", "Eine Art Stern", "Einheit der Hubble-Konstante"], why: "WIMPs sind hypothetische Teilchen, aus denen Dunkle Materie bestehen könnte." },
+  { q: "Wann wurde die kosmische Hintergrundstrahlung entdeckt?", a: ["1964", "1922", "1948", "2016"], why: "Penzias und Wilson stießen 1964 zufällig auf die Strahlung." },
+  { q: "Wer hat die Hintergrundstrahlung entdeckt?", a: ["Penzias und Wilson", "Hubble und Lemaître", "Alpher und Gamow", "Einstein und Friedmann"], why: "Arno Penzias und Robert Wilson bekamen dafür 1978 den Nobelpreis." },
+  { q: "Was wurde bei der Suche nach der „Störung“ als Ursache geprüft?", a: ["Vogelkot auf der Antenne", "Ein Gewitter", "Ein Handysignal", "Ein Satellit"], why: "Sie reinigten die Antenne von Taubenkot, das Rauschen blieb trotzdem." },
+  { q: "Welche Temperatur hat die Hintergrundstrahlung?", a: ["2,725 K", "0 K", "273 K", "5800 K"], why: "Sie entspricht einem Körper mit 2,725 Kelvin, knapp über dem absoluten Nullpunkt." },
+  { q: "Warum ist die Hintergrundstrahlung ein so starker Beleg?", a: ["Sie war vorhergesagt worden", "Sie ist sehr hell", "Man sieht sie mit bloßem Auge", "Sie kommt aus einer Richtung"], why: "Die Urknalltheorie sagte sie voraus, bevor man sie fand. Sie kommt aus allen Richtungen." },
+  { q: "Was gilt für die Rotverschiebung von Galaxien?", a: ["Je weiter weg, desto stärker", "Je näher, desto stärker", "Bei allen Galaxien gleich", "Es gibt nur Blauverschiebung"], why: "Je weiter eine Galaxie entfernt ist, desto stärker ist ihr Licht ins Rote verschoben." },
+  { q: "Was zeigen die schwarzen Linien in den Spektren?", a: ["Absorptionslinien", "Schatten von Planeten", "Messfehler", "Dunkle Materie"], why: "Atome schlucken Licht bestimmter Wellenlängen. An diesen Linien sieht man die Verschiebung." },
+  { q: "Wie alt ist das Universum ungefähr?", a: ["ca. 14 Mrd. Jahre", "ca. 4,5 Mrd. Jahre", "ca. 90 Mrd. Jahre", "unendlich alt"], why: "Genauer sind es etwa 13,8 Mrd. Jahre. 4,5 Mrd. ist das Alter der Erde." },
+  { q: "Was bedeutet „isotrop“?", a: ["In alle Richtungen gleich", "Von jedem Ort aus gleich", "Überall gleich warm", "Unendlich groß"], why: "Isotrop heißt: Egal wohin man schaut, im Großen sieht es gleich aus." },
+  { q: "Was bedeutet „homogen“?", a: ["Von jedem Ort aus gleich", "In alle Richtungen gleich", "Gleich hell", "Gleich alt"], why: "Homogen heißt: Kein Ort ist im Großen gegenüber einem anderen besonders." },
+  { q: "Ab welcher Größenordnung gilt das kosmologische Prinzip?", a: ["ab ca. 300 Mio. Lj", "ab ca. 300 Lj", "ab ca. 300.000 Lj", "ab ca. 300 Mrd. Lj"], why: "Erst ab etwa 300 Millionen Lichtjahren gleichen sich die Strukturen aus." },
+  { q: "Wie heißt das Rätsel um den dunklen Nachthimmel?", a: ["Olbers'sches Paradoxon", "Hubble-Paradoxon", "Zwillingsparadoxon", "Einstein-Paradoxon"], why: "Benannt nach Heinrich Wilhelm Olbers." },
+  { q: "Warum ist der Nachthimmel trotz unzähliger Sterne dunkel?", a: ["Ihr Licht hat uns nicht erreicht", "Staub schluckt das Licht", "Die Sterne sind zu klein", "Die Atmosphäre blockt das Licht"], why: "Das Universum hat ein Alter, also hatte das Licht sehr ferner Sterne noch keine Zeit, uns zu erreichen." }
 ];
 
 /* ---------- Spielstand ---------- */
@@ -621,7 +602,7 @@ function nextQuestion() {
     if (n > 0 && G.deck[n] === G.lastQ) [G.deck[0], G.deck[n]] = [G.deck[n], G.deck[0]];
   }
   const q = G.lastQ = G.deck.pop();
-  const opts = shuffle(q.a.map((text, i) => ({ text, ok: i === 0 })));
+  const opts = shuffle([{ text: q.a[0], ok: true }, ...shuffle(q.a.slice(1)).slice(0, 2).map(text => ({ text, ok: false }))]);
   const z = G.speed * G.cfg.read * (1 - .35 * G.p);
   G.door = { type: "door", z, z0: z, q, opts, picked: -1, revealed: false };
   G.objs.push(G.door);
